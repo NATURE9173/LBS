@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Check Availability</h1>
+<form action="{{ url_for('availability') }}" method="get" class="card form-grid">
+  <label>Date
+    <input type="date" name="date" value="{{ today if today is defined else '' }}" required>
+  </label>
+  <label>Location
+    <select name="location">
+      {% for loc in locations %}
+        <option value="{{ loc }}" {% if request.args.get('location','Pune') == loc %}selected{% endif %}>{{ loc }}</option>
+      {% endfor %}
+    </select>
+  </label>
+  <button type="submit">View</button>
+</form>
+{% endblock %}

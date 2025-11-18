@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lab Booking</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">Lab Booking</div>
+  <nav>
+    <a href="{{ url_for('index') }}">Home</a>
+    <a href="{{ url_for('availability', date=request.args.get('date') or (today if today is defined else ''), location=request.args.get('location','Pune')) }}">Availability</a>
+    {% if session.get('admin') %}
+      <a href="{{ url_for('admin_dashboard') }}">Admin</a>
+      <a href="{{ url_for('admin_logout') }}">Logout</a>
+    {% else %}
+      <a href="{{ url_for('admin_login') }}">Admin Login</a>
+    {% endif %}
+  </nav>
+</header>
+
+<main class="container">
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <div class="flash-wrap">
+        {% for category, message in messages %}
+          <div class="flash {{ category }}">{{ message }}</div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+
+  {% block content %}{% endblock %}
+</main>
+
+<footer class="footer">© {{ (today if today is defined else '')[:4] or '2025' }} Lab Booking</footer>
+</body>
+</html>
